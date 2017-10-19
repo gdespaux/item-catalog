@@ -1,18 +1,10 @@
 {% extends "main.html" %}
 {% block content %}
-<div class="row top-menu">
-    <div class="col-md-10"></div>
-    <div class="col-md-2 text-right">
-        <a href="{{url_for('show_login')}}">Login </a>
-    </div>
-</div>
-<div class="row divider blue">
-    <div class="col-md-12"></div>
-</div>
-<div class="row banner main">
-    <div class="col-md-1"></div>
-    <div class="col-md-11 padding-none">
-        <h1>Categories</h1>
+{% include "public-header.html" %}
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-3">Categories</h1>
+        <p>Here's all the current categories.</p>
     </div>
 </div>
 <div class='flash'>
@@ -28,22 +20,18 @@
     {% endwith %}
 
 </div>
-<div class="row padding-top padding-bottom">
-    <div class="col-md-1"></div>
-    <div class="col-md-10 padding-none">
-
-    </div>
-    <div class="col-md-1"></div>
-</div>
-{% for category in categories %}
-<a href="{{url_for('show_category_items', category_id = category.id)}}">
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10 item-list">
-            <h3>{{category.name}}</h3>
+<div class="row">
+    {% for category in categories %}
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{category.name}}</h4>
+                <p class="card-text">{{category.description}}</p>
+                <a href="{{url_for('show_category_items', category_id = category.id)}}"
+                   class="btn btn-primary">View items</a>
+            </div>
         </div>
-        <div class="col-md-1"></div>
     </div>
-</a>
-{% endfor %}
+    {% endfor %}
+</div>
 {% endblock %}

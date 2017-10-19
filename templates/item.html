@@ -1,17 +1,43 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
-<div class="row divider green">
-    <div class="col-md-12"></div>
-</div>
-<div class="row banner menu">
-    <div class="col-md-11 col-md-offset-1 padding-none">
-        <h1>{{ category.name }}
-            <figure class="creator">
-                <img src="{{ url_for('static', filename='blank_user.gif') }}">
-                <figcaption>Category creator's name goes here</figcaption>
-            </figure>
-        </h1>
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <h1 class="display-3">{{category.name}}</h1>
+                <p>{{category.description}}</p>
+            </div>
+            <div class="col-2 ml-auto">
+                <figure class="figure">
+                    <img class="figure-img img-fluid rounded"
+                         src="{{creator.picture}}"
+                         alt="Photo of the user that created this category">
+                    <figcaption class="figure-caption text-center">
+                        {{creator.name}}
+                    </figcaption>
+                </figure>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-success"
+                   href="{{url_for('new_item', category_id = category.id)}}">
+                <span class="oi oi-plus"
+                      aria-hidden="true"></span> Add Item
+                </a>
+                <a class="btn btn-warning"
+                   href="{{url_for('edit_category', category_id = category.id)}}">
+                <span class="oi oi-pencil"
+                      aria-hidden="true"></span> Edit Category
+                </a>
+                <a class="btn btn-danger"
+                   href="{{url_for('delete_category', category_id = category.id)}}">
+                <span class="oi oi-trash"
+                      aria-hidden="true"></span> Delete Category
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 <div class='flash'>
@@ -25,47 +51,31 @@
     {% endif %}
     {% endwith %}
 </div>
-<div class="row padding-top padding-bottom">
-    <div class="col-md-1"></div>
-    <div class="col-md-11 padding-none">
-        <a href="{{url_for('edit_category', category_id = category.id )}}">
-            <button class="btn btn-default" id="new-category">
-                <span class="glyphicon glyphicon-pencil"
-                      aria-hidden="true"></span>Edit Category
-            </button>
-        </a>
-        <a href="{{url_for('new_item', category_id = category.id )}}">
-            <button class="btn btn-default" id="new-item">
-                <span class="glyphicon glyphicon-glass"
-                      aria-hidden="true"></span>Add Item
-            </button>
-        </a>
-        <a href="{{url_for('delete_category', category_id = category.id )}}">
-            <button class="btn btn-default delete" id="delete-category">
-                <span class="glyphicon glyphicon-trash"
-                      aria-hidden="true"></span>Delete Category
-            </button>
-        </a>
+<div class="row">
+    <div class="col">
+        <h2>Items</h2>
     </div>
-    <div class="col-md-7"></div>
 </div>
 {% if items !=[] %}
 <div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-3">
-        <h2>Items</h2>
-        {% for i in items %}
-        <div class="category-item">
-            <h3>{{i.name}}</h3>
-            <p>{{i.description}}</p>
-            <a href='{{url_for(' edit_item', category_id = category.id,
-            item_id=i.id ) }}'>Edit</a> |
-            <a href='{{url_for(' delete_tem', category_id = category.id,
-            item_id=i.id ) }}'>Delete</a>
+    {% for i in items %}
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{i.name}}</h4>
+                <p class="card-text">{{i.description}}</p>
+                <a href="{{url_for('edit_item', category_id = category.id, item_id=i.id)}}"
+                   class="btn btn-sm btn-warning"><span class="oi oi-pencil"
+                                                        aria-hidden="true"></span>
+                    Edit</a>
+                <a href="{{url_for('delete_item', category_id = category.id, item_id=i.id)}}"
+                   class="btn btn-sm btn-danger"><span class="oi oi-trash"
+                                                       aria-hidden="true"></span>
+                    Delete</a>
+            </div>
         </div>
-        {% endfor %}
     </div>
-    <div class="col-md-1"></div>
+    {% endfor %}
 </div>
 {% endif %}
 {% endblock %}
